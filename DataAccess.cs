@@ -1,8 +1,7 @@
 ﻿ using System;
 using System.Data;
  using System.Transactions;
-using System.Data.OracleClient;
-using System.Collections.Generic;
+ using System.Collections.Generic;
 using System.Data.Common;
 
 namespace DataAccess
@@ -255,17 +254,16 @@ namespace DataAccess
         /// <param name="outParameters"></param>
         /// <param name="returnValue"></param>
         /// <returns></returns>
-        public DataTable ExecuteStoredProcedure(string spName, IList<OracleParameter> inParameters, IList<OracleParameter> outParameters, OracleParameter returnValue)
+        public DataTable ExecuteStoredProcedure(string spName, IList<DbParameter> inParameters, IList<DbParameter> outParameters, DbParameter returnValue)
         {
             var command = _dbProviderFactory.CreateCommand();
             if (command != null)
             {
+                _connection.Open();
+
                 command.Connection = (DbConnection)DbConnection;
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = spName;
-
-                //var command = new OracleCommand(storedProcedure, _connection);
-                //command.CommandType = CommandType.StoredProcedure;
 
                 if (returnValue != null)
                 {
@@ -294,12 +292,21 @@ namespace DataAccess
 
             DataTable dataTable = null;
 
-            if (command != null)
-                using (IDataReader dataReader = command.ExecuteReader())
+            try
+            {
+                if (command != null)
                 {
-                    dataTable = new DataTable();
-                    dataTable.Load(dataReader);
+                    using (IDataReader dataReader = command.ExecuteReader())
+                    {
+                        dataTable = new DataTable();
+                        dataTable.Load(dataReader);
+                    } 
                 }
+            }
+            finally
+            {
+                _connection.Close();
+            }
 
             return dataTable;
         }
