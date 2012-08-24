@@ -247,13 +247,13 @@ namespace DataAccess
             return ExecuteStoredProcedure(spName, null, null, null);
         }
         /// <summary>
-        /// 
+        ///  Public method to execute a stored procedure on the database providing parameters
         /// </summary>
-        /// <param name="spName"></param>
-        /// <param name="inParameters"></param>
-        /// <param name="outParameters"></param>
+        /// <param name="spName">Parameter of type String.Name of the stored procedure.</param>
+        /// <param name="inParameters">List of In Parameters of type DbParameter</param>
+        /// <param name="outParameters">List of Our Parameters of type DbParameter</param>
         /// <param name="returnValue"></param>
-        /// <returns></returns>
+        /// <returns>Return a datatable with whatever returns from the database.</returns>
         public DataTable ExecuteStoredProcedure(string spName, IList<DbParameter> inParameters, IList<DbParameter> outParameters, DbParameter returnValue)
         {
             var command = _dbProviderFactory.CreateCommand();
@@ -289,6 +289,9 @@ namespace DataAccess
                     }
                 }
             }
+
+
+            //Does returning this datatable actually work every time?
 
             DataTable dataTable = null;
 
