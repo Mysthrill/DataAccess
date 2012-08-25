@@ -6,7 +6,7 @@ using System.Data.Common;
 
 namespace DataAccess
 {
-    public class DataAccess : IDataAccess, IDisposable
+    public class DataAccess : IDataAccess
     {
         #region Variables
         /// <summary>
@@ -38,11 +38,18 @@ namespace DataAccess
                 return _connection;
             }
         }
+
+        /// <summary>
+        /// Name of the Data Provider
+        /// </summary>
         public string DataProvider
         {
             get { return _dataProvider; }
         }
 
+        /// <summary>
+        /// DbProvider factory linked to the DataProvider
+        /// </summary>
         public DbProviderFactory DbProviderFactory
         {
             get { return _dbProviderFactory; }

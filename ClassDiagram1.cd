@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="DataAccess.DataAccess">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="0.5" Width="3.5" />
     <TypeIdentifier>
       <HashCode>AAAIACCBICAEgCQABAAEAEBQAAAQAAAAQAAAAAAABAA=</HashCode>
       <FileName>DataAccess.cs</FileName>
@@ -9,9 +9,9 @@
     <Lollipop Position="0.2" />
   </Class>
   <Interface Name="DataAccess.IDataAccess">
-    <Position X="2.25" Y="0.5" Width="1.5" />
+    <Position X="4.5" Y="0.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAIACABIAAAgCAABAAAAEAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <HashCode>AAAIACABIAAAgCAABAAEAEBAAAAQAAAAQAAAAAAAAAA=</HashCode>
       <FileName>IDataAccess.cs</FileName>
     </TypeIdentifier>
   </Interface>

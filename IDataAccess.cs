@@ -1,10 +1,17 @@
 ﻿using System.Data;
+using System.Data.Common;
+using System;
+using System.Collections.Generic;
 
 namespace DataAccess
 {
-    public interface IDataAccess
+    public interface IDataAccess : IDisposable
     {
         IDbConnection DbConnection { get; }
+
+        string DataProvider { get; }
+
+        DbProviderFactory DbProviderFactory { get; }
        
         bool CheckConnection();
         
@@ -23,5 +30,10 @@ namespace DataAccess
         void CommitTransaction();
 
         void RollBackTransaction();
+
+        DataTable ExecuteStoredProcedure(string spName);
+
+        DataTable ExecuteStoredProcedure(string spName, IList<DbParameter> inParameters,
+                                                IList<DbParameter> outParameters, DbParameter returnValue);
     }
 }
