@@ -12,11 +12,11 @@ namespace DataAccess
         string DataProvider { get; }
 
         DbProviderFactory DbProviderFactory { get; }
-       
+
         bool CheckConnection();
-        
+
         DataSet GetDataSet(IDbCommand command);
-        
+
         DataTable GetDataTable(IDbCommand command);
 
         DataRow GetDataRow(IDbCommand command);

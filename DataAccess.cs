@@ -65,6 +65,10 @@ namespace DataAccess
         /// <param name="connectionString">The connectionstring used for the dataprovider</param>
         public DataAccess(string dataProvider, string connectionString)
         {
+            //TODO : Add a check if the provider is registered on the machine.
+
+            //TODO : Check if the connectionstring is valid for the dataprovider and connection
+
             if (String.IsNullOrEmpty(connectionString))
                 throw new ArgumentNullException("connectionString");
             if (String.IsNullOrEmpty(dataProvider))
@@ -110,6 +114,9 @@ namespace DataAccess
         /// <returns>Returns the number of rows affected.</returns>
         public int ExecuteNonQuery(IDbCommand command)
         {
+            if (command == null)
+                throw new ArgumentNullException("command");
+
             int result;
 
             using (command)
@@ -139,7 +146,7 @@ namespace DataAccess
         /// </summary>
         public void BeginTransaction()
         {
-            if(_transaction == null)
+            if (_transaction == null)
                 _transaction = DbConnection.BeginTransaction();
         }
         /// <summary>
@@ -156,10 +163,10 @@ namespace DataAccess
         /// </summary>
         public void CommitTransaction()
         {
-            if(_transaction != null)
+            if (_transaction != null)
             {
                 _transaction.Commit();
-                _transaction.Dispose();   
+                _transaction.Dispose();
             }
         }
         /// <summary>
@@ -167,10 +174,10 @@ namespace DataAccess
         /// </summary>
         public void RollBackTransaction()
         {
-            if(_transaction != null)
+            if (_transaction != null)
             {
                 _transaction.Rollback();
-                _transaction.Dispose();   
+                _transaction.Dispose();
             }
         }
 
@@ -182,6 +189,9 @@ namespace DataAccess
         /// <returns>A dataset with values as result of the command</returns>
         public DataSet GetDataSet(IDbCommand command)
         {
+            if (command == null)
+                throw new ArgumentNullException("command");
+
             DataSet ds = new DataSet();
 
             _connection.Open();
@@ -214,6 +224,9 @@ namespace DataAccess
         /// <returns></returns>
         public DataTable GetDataTable(IDbCommand command)
         {
+            if (command == null)
+                throw new ArgumentNullException("command");
+
             return GetDataSet(command).Tables[0];
         }
         /// <summary>
@@ -223,6 +236,9 @@ namespace DataAccess
         /// <returns></returns>
         public DataRow GetDataRow(IDbCommand command)
         {
+            if (command == null)
+                throw new ArgumentNullException("command");
+
             DataRow dr = null;
             DataTable dt = GetDataTable(command);
             if (dt.Rows.Count > 0)
@@ -231,7 +247,6 @@ namespace DataAccess
             }
             return dr;
         }
-
         #endregion
 
         #region Implementing IDisposable
@@ -241,6 +256,7 @@ namespace DataAccess
         public void Dispose()
         {
             _connection.Dispose();
+            _transaction.Dispose();
         }
         #endregion
 
@@ -251,6 +267,9 @@ namespace DataAccess
         /// <returns>A DataTable containing data returned by the stored procedure</returns>
         public DataTable ExecuteStoredProcedure(string spName)
         {
+            if (String.IsNullOrEmpty(spName))
+                throw new ArgumentException("spName");
+
             return ExecuteStoredProcedure(spName, null, null, null);
         }
         /// <summary>
@@ -263,6 +282,9 @@ namespace DataAccess
         /// <returns>Return a datatable with whatever returns from the database.</returns>
         public DataTable ExecuteStoredProcedure(string spName, IList<DbParameter> inParameters, IList<DbParameter> outParameters, DbParameter returnValue)
         {
+            if (String.IsNullOrEmpty(spName))
+                throw new ArgumentException("spName");
+
             var command = _dbProviderFactory.CreateCommand();
             if (command != null)
             {
@@ -310,7 +332,7 @@ namespace DataAccess
                     {
                         dataTable = new DataTable();
                         dataTable.Load(dataReader);
-                    } 
+                    }
                 }
             }
             finally
